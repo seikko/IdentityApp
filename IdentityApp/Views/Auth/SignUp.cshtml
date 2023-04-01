@@ -1,0 +1,43 @@
+﻿@using IdentityApp.ViewModels;
+@model SignUpViewModel
+@{
+    ViewData["Title"] = "SignUp";
+}
+
+<h1>SignUp</h1>
+
+@if (!string.IsNullOrEmpty(ViewBag.SuccessMessage))
+{
+    <div class="alert alert-warning" role="alert">
+        @ViewBag.SuccessMessage
+    </div>
+}
+
+
+<form asp-controller="Auth" asp-action="SignUp" method="post">
+    <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label">Email</label>
+        <input type="email" class="form-control" asp-for="Email" aria-describedby="emailHelp">
+        <div id="emailHelp" class="form-text"></div>
+    </div>
+    <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label">UserName</label>
+        <input   class="form-control" asp-for="UserName" aria-describedby="emailHelp">
+        <div id="emailHelp" class="form-text">We'll never share your username with anyone else.</div>
+    </div>
+    <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label">Phone</label>
+        <input  class="form-control" asp-for="PhoneNumber" aria-describedby="emailHelp">
+        <div id="emailHelp" class="form-text">We'll never share your phone with anyone else.</div>
+    </div>
+    <div class="mb-3">
+        <label for="exampleInputPassword1" class="form-label">Password</label>
+        <input type="password" class="form-control" asp-for="Password">
+    </div>
+    <div class="mb-3">
+        <label for="exampleInputPassword1" class="form-label">Password Confirm</label>
+        <input type="password" class="form-control" asp-for="PasswordConfirm">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
