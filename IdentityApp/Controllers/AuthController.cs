@@ -27,27 +27,28 @@ namespace IdentityApp.Controllers
         {
             var identityResult = await _userManager.CreateAsync(new() { UserName = request.UserName, PhoneNumber = request.PhoneNumber, Email = request.Email }, request.PasswordConfirm);
 
-            if(identityResult.Succeeded)
+            if (identityResult.Succeeded)
             {
                 ViewBag.SuccessMessage = "Kayıt işlemi başarılı";
                 return View();
             }
 
-            ModelState.AddModelErrorList(identityResult.Errors.Select(x=> x.Description).ToList()) ;
+            ModelState.AddModelErrorList(identityResult.Errors.Select(x => x.Description).ToList());
             return View();
         }
+
         public IActionResult SignIn()
         {
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> SignIn(SignInViewModel request,string? returnUrl = null)
+        public async Task<IActionResult> SignIn(SignInViewModel request, string? returnUrl = null)
         {
 
-            returnUrl =returnUrl ?? Url.Action("Index","Home");
-            var isUser = await  _userManager.FindByEmailAsync(request.Email!);
-            if(isUser == null)
+            returnUrl = returnUrl ?? Url.Action("Index", "Home");
+            var isUser = await _userManager.FindByEmailAsync(request.Email!);
+            if (isUser == null)
             {
                 ModelState.AddModelError(string.Empty, "Email veya şifre yanlış");
             }
@@ -66,6 +67,12 @@ namespace IdentityApp.Controllers
             }
             ModelState.AddModelErrorList(new List<string>() { $"Email veya şifre yanlış", $"Başarısız giriş sayısı = {await _userManager.GetAccessFailedCountAsync(isUser)} - Süresi {await _userManager.GetLockoutEndDateAsync(isUser)}" });
             return View();
+        }
+
+        public IActionResult LogOut()
+        {
+            _signInManager.SignOutAsync();
+            return RedirectToAction("SignUp");
         }
         /*
          Access fail count basarısız giriş işlemleri tutar

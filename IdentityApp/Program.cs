@@ -14,6 +14,15 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("SqlConnection"));
 });
 
+builder.Services.ConfigureApplicationCookie(opt =>
+{
+    var cookieBuilder = new CookieBuilder();
+    cookieBuilder.Name = "IdentityCookie";
+    opt.LoginPath = new PathString("/Auth/Signin");//giriþ yapmayan kullanýcýlarý buraya yonlendir
+    opt.Cookie = cookieBuilder;
+    opt.ExpireTimeSpan = TimeSpan.FromDays(60);//60 gün cookie süresi
+    opt.SlidingExpiration = true;//30.cu gün giriþ yapan kullanýcýnýn cookie süresini tekrar 60 gün olarak set eder 
+});
 builder.Services.AddIdentityWithExtension();
 var app = builder.Build();
 
